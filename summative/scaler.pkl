@@ -1,3 +1,0 @@
-# Save the scaler
-joblib.dump(scaler, 'scaler.pkl')
-print("Scaler saved as 'scaler.pkl'")
