@@ -100,6 +100,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
         'Soil_Type_Loam': selectedSoilType == 'Loam' ? 1 : 0,
         'Soil_Type_Sandy': selectedSoilType == 'Sandy' ? 1 : 0,
         'Soil_Type_Silt': selectedSoilType == 'Silt' ? 1 : 0,
+        'Soil_Type_Loamy': selectedSoilType == 'Loamy' ? 1 : 0,
         
         // Crop Type (only ONE can be 1)
         'Crop_Barley': selectedCropType == 'Barley' ? 1 : 0,
