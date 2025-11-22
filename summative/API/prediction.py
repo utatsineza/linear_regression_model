@@ -23,6 +23,7 @@ class CropYieldInput(BaseModel):
     # Soil Type (one-hot encoded) - only ONE should be 1, rest 0
     Soil_Type_Clay: int = Field(0, ge=0, le=1)
     Soil_Type_Loam: int = Field(0, ge=0, le=1)
+    Soil_Type_Loamy: int = Field(0, ge=0, le=1)
     Soil_Type_Sandy: int = Field(0, ge=0, le=1)
     Soil_Type_Silt: int = Field(0, ge=0, le=1)
     
