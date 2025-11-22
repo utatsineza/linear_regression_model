@@ -31,7 +31,7 @@ class PredictionScreen extends StatefulWidget {
 }
 
 class _PredictionScreenState extends State<PredictionScreen> {
-  final String apiUrl = 'https://linear-regression-model-ty1c.onrender.com/predict';
+  final String apiUrl = 'https://linear-regression-model-q8oj.onrender.com/predict';
   
   // Controllers for text fields
   final TextEditingController rainfallController = TextEditingController();
