@@ -383,7 +383,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
     required Function(String?) onChanged,
   }) {
     return DropdownButtonFormField<String>(
-      value: value,
+      initialValue: value,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon, color: Colors.green.shade700),
