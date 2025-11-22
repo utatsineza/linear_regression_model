@@ -21,7 +21,6 @@ class CropYieldInput(BaseModel):
     # Soil Type (one-hot encoded)
     Soil_Type_Clay: int = Field(0, ge=0, le=1)
     Soil_Type_Loam: int = Field(0, ge=0, le=1)
-    Soil_Type_Loamy: int = Field(0, ge=0, le=1)
     Soil_Type_Sandy: int = Field(0, ge=0, le=1)
     Soil_Type_Silt: int = Field(0, ge=0, le=1)
     
@@ -105,7 +104,6 @@ async def predict_yield(input_data: CropYieldInput):
             'Region_West': input_data.Region_West,
             'Soil_Type_Clay': input_data.Soil_Type_Clay,
             'Soil_Type_Loam': input_data.Soil_Type_Loam,
-            'Soil_Type_Loamy': input_data.Soil_Type_Loamy,
             'Soil_Type_Sandy': input_data.Soil_Type_Sandy,
             'Soil_Type_Silt': input_data.Soil_Type_Silt,
             'Crop_Barley': input_data.Crop_Barley,
