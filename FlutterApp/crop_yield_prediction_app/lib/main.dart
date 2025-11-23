@@ -31,15 +31,13 @@ class PredictionScreen extends StatefulWidget {
 }
 
 class _PredictionScreenState extends State<PredictionScreen> {
-  final String apiUrl = 'https://linear-regression-model-q8oj.onrender.com/predict';
+  final String apiUrl = 'https://linear-regression-model-ty1c.onrender.com/predict';
   
-  // Controllers for text fields
   final TextEditingController rainfallController = TextEditingController();
   final TextEditingController temperatureController = TextEditingController();
   final TextEditingController fertilizerController = TextEditingController();
   final TextEditingController daysToHarvestController = TextEditingController();
   
-  // Dropdown values
   String? selectedRegion;
   String? selectedSoilType;
   String? selectedCropType;
@@ -81,7 +79,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
     });
 
     try {
-      // Prepare request with ALL 21 features in exact order
+      // Prepare request with EXACT 20 features matching model
       final Map<String, dynamic> requestBody = {
         'Rainfall_mm': double.parse(rainfallController.text),
         'Temperature_Celsius': double.parse(temperatureController.text),
@@ -89,27 +87,26 @@ class _PredictionScreenState extends State<PredictionScreen> {
         'Irrigation_Used': useIrrigation ? 1 : 0,
         'Days_to_Harvest': int.parse(daysToHarvestController.text),
         
-        // Region (only ONE can be 1)
-        'Region_East': selectedRegion == 'East' ? 1 : 0,
+        // Region (3 options: North, South, West)
         'Region_North': selectedRegion == 'North' ? 1 : 0,
         'Region_South': selectedRegion == 'South' ? 1 : 0,
         'Region_West': selectedRegion == 'West' ? 1 : 0,
         
-        // Soil Type (only ONE can be 1)
+        // Soil Type (5 options)
         'Soil_Type_Clay': selectedSoilType == 'Clay' ? 1 : 0,
         'Soil_Type_Loam': selectedSoilType == 'Loam' ? 1 : 0,
+        'Soil_Type_Peaty': selectedSoilType == 'Peaty' ? 1 : 0,
         'Soil_Type_Sandy': selectedSoilType == 'Sandy' ? 1 : 0,
         'Soil_Type_Silt': selectedSoilType == 'Silt' ? 1 : 0,
         
-        // Crop Type (only ONE can be 1)
-        'Crop_Barley': selectedCropType == 'Barley' ? 1 : 0,
+        // Crop Type (5 options: Cotton, Maize, Rice, Soybean, Wheat)
         'Crop_Cotton': selectedCropType == 'Cotton' ? 1 : 0,
+        'Crop_Maize': selectedCropType == 'Maize' ? 1 : 0,
         'Crop_Rice': selectedCropType == 'Rice' ? 1 : 0,
         'Crop_Soybean': selectedCropType == 'Soybean' ? 1 : 0,
         'Crop_Wheat': selectedCropType == 'Wheat' ? 1 : 0,
         
-        // Weather Condition (only ONE can be 1)
-        'Weather_Condition_Cloudy': selectedWeatherCondition == 'Cloudy' ? 1 : 0,
+        // Weather Condition (2 options: Rainy, Sunny)
         'Weather_Condition_Rainy': selectedWeatherCondition == 'Rainy' ? 1 : 0,
         'Weather_Condition_Sunny': selectedWeatherCondition == 'Sunny' ? 1 : 0,
       };
@@ -210,7 +207,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                 value: selectedWeatherCondition,
                 label: 'Weather Condition',
                 icon: Icons.wb_sunny,
-                items: ['Sunny', 'Rainy', 'Cloudy'],
+                items: ['Sunny', 'Rainy'],
                 onChanged: (value) => setState(() => selectedWeatherCondition = value),
               ),
               
@@ -221,7 +218,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                 value: selectedCropType,
                 label: 'Crop Type',
                 icon: Icons.grass,
-                items: ['Wheat', 'Rice', 'Cotton', 'Barley', 'Soybean'],
+                items: ['Cotton', 'Maize', 'Rice', 'Soybean', 'Wheat'],
                 onChanged: (value) => setState(() => selectedCropType = value),
               ),
               const SizedBox(height: 12),
@@ -229,7 +226,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                 value: selectedSoilType,
                 label: 'Soil Type',
                 icon: Icons.terrain,
-                items: ['Clay', 'Sandy', 'Loam', 'Silt'],
+                items: ['Clay', 'Loam', 'Peaty', 'Sandy', 'Silt'],
                 onChanged: (value) => setState(() => selectedSoilType = value),
               ),
               const SizedBox(height: 12),
@@ -237,7 +234,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                 value: selectedRegion,
                 label: 'Region',
                 icon: Icons.location_on,
-                items: ['North', 'South', 'East', 'West'],
+                items: ['North', 'South', 'West'],
                 onChanged: (value) => setState(() => selectedRegion = value),
               ),
               const SizedBox(height: 12),
