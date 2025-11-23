@@ -31,20 +31,19 @@ class PredictionScreen extends StatefulWidget {
 }
 
 class _PredictionScreenState extends State<PredictionScreen> {
-  final String apiUrl =
-      'https://linear-regression-model-q8oj.onrender.com/predict';
-
+  final String apiUrl = 'https://linear-regression-model-ty1c.onrender.com/predict';
+  
   final TextEditingController rainfallController = TextEditingController();
   final TextEditingController temperatureController = TextEditingController();
   final TextEditingController fertilizerController = TextEditingController();
   final TextEditingController daysToHarvestController = TextEditingController();
-
+  
   String? selectedRegion;
   String? selectedSoilType;
   String? selectedCropType;
   String? selectedWeatherCondition;
   bool useIrrigation = false;
-
+  
   String predictionResult = '';
   bool isLoading = false;
   Color resultColor = Colors.black;
@@ -87,44 +86,41 @@ class _PredictionScreenState extends State<PredictionScreen> {
         'Fertilizer_Used': double.parse(fertilizerController.text),
         'Irrigation_Used': useIrrigation ? 1 : 0,
         'Days_to_Harvest': int.parse(daysToHarvestController.text),
-
+        
         // Region (3 options: North, South, West)
         'Region_North': selectedRegion == 'North' ? 1 : 0,
         'Region_South': selectedRegion == 'South' ? 1 : 0,
         'Region_West': selectedRegion == 'West' ? 1 : 0,
-        'Region_East': selectedRegion == 'East' ? 1 : 0,
-
-        // Soil Type (4 options)
+        
+        // Soil Type (5 options)
         'Soil_Type_Clay': selectedSoilType == 'Clay' ? 1 : 0,
         'Soil_Type_Loam': selectedSoilType == 'Loam' ? 1 : 0,
+        'Soil_Type_Peaty': selectedSoilType == 'Peaty' ? 1 : 0,
         'Soil_Type_Sandy': selectedSoilType == 'Sandy' ? 1 : 0,
         'Soil_Type_Silt': selectedSoilType == 'Silt' ? 1 : 0,
-
+        
         // Crop Type (5 options: Cotton, Maize, Rice, Soybean, Wheat)
         'Crop_Cotton': selectedCropType == 'Cotton' ? 1 : 0,
-        'Crop_Barley': selectedCropType == 'Barley' ? 1 : 0,
+        'Crop_Maize': selectedCropType == 'Maize' ? 1 : 0,
         'Crop_Rice': selectedCropType == 'Rice' ? 1 : 0,
         'Crop_Soybean': selectedCropType == 'Soybean' ? 1 : 0,
         'Crop_Wheat': selectedCropType == 'Wheat' ? 1 : 0,
-
+        
         // Weather Condition (2 options: Rainy, Sunny)
         'Weather_Condition_Rainy': selectedWeatherCondition == 'Rainy' ? 1 : 0,
         'Weather_Condition_Sunny': selectedWeatherCondition == 'Sunny' ? 1 : 0,
-        'Weather_Condition_Cloudy': selectedWeatherCondition == 'Cloudy' ? 1 : 0,
       };
 
-      final response = await http
-          .post(
-            Uri.parse(apiUrl),
-            headers: {'Content-Type': 'application/json'},
-            body: json.encode(requestBody),
-          )
-          .timeout(const Duration(seconds: 30));
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(requestBody),
+      ).timeout(const Duration(seconds: 30));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
-          predictionResult =
+          predictionResult = 
               'Predicted Yield: ${data['predicted_yield']} tons/hectare\n'
               'Confidence: ${data['model_confidence']}';
           resultColor = Colors.green.shade700;
@@ -175,28 +171,23 @@ class _PredictionScreenState extends State<PredictionScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      Icon(
-                        Icons.agriculture,
-                        size: 48,
-                        color: Colors.green.shade700,
-                      ),
+                      Icon(Icons.agriculture, size: 48, color: Colors.green.shade700),
                       const SizedBox(height: 8),
                       Text(
                         'Agricultural Yield Prediction',
-                        style: Theme.of(context).textTheme.headlineSmall
-                            ?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.green.shade800,
-                            ),
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green.shade800,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ],
                   ),
                 ),
               ),
-
+              
               const SizedBox(height: 24),
-
+              
               _buildSectionTitle('Environmental Conditions'),
               _buildTextField(
                 controller: rainfallController,
@@ -216,19 +207,18 @@ class _PredictionScreenState extends State<PredictionScreen> {
                 value: selectedWeatherCondition,
                 label: 'Weather Condition',
                 icon: Icons.wb_sunny,
-                items: ['Sunny', 'Rainy', 'Cloudy'],
-                onChanged: (value) =>
-                    setState(() => selectedWeatherCondition = value),
+                items: ['Sunny', 'Rainy'],
+                onChanged: (value) => setState(() => selectedWeatherCondition = value),
               ),
-
+              
               const SizedBox(height: 24),
-
+              
               _buildSectionTitle('Agricultural Inputs'),
               _buildDropdown(
                 value: selectedCropType,
                 label: 'Crop Type',
                 icon: Icons.grass,
-                items: ['Cotton', 'Barley', 'Rice', 'Soybean', 'Wheat'],
+                items: ['Cotton', 'Maize', 'Rice', 'Soybean', 'Wheat'],
                 onChanged: (value) => setState(() => selectedCropType = value),
               ),
               const SizedBox(height: 12),
@@ -236,7 +226,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                 value: selectedSoilType,
                 label: 'Soil Type',
                 icon: Icons.terrain,
-                items: ['Clay', 'Loam', 'Sandy', 'Silt'],
+                items: ['Clay', 'Loam', 'Peaty', 'Sandy', 'Silt'],
                 onChanged: (value) => setState(() => selectedSoilType = value),
               ),
               const SizedBox(height: 12),
@@ -244,7 +234,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                 value: selectedRegion,
                 label: 'Region',
                 icon: Icons.location_on,
-                items: ['North', 'South', 'West', 'East'],
+                items: ['North', 'South', 'West'],
                 onChanged: (value) => setState(() => selectedRegion = value),
               ),
               const SizedBox(height: 12),
@@ -254,9 +244,9 @@ class _PredictionScreenState extends State<PredictionScreen> {
                 hint: '30 - 365',
                 icon: Icons.calendar_today,
               ),
-
+              
               const SizedBox(height: 24),
-
+              
               _buildSectionTitle('Farming Practices'),
               _buildTextField(
                 controller: fertilizerController,
@@ -271,9 +261,9 @@ class _PredictionScreenState extends State<PredictionScreen> {
                 value: useIrrigation,
                 onChanged: (value) => setState(() => useIrrigation = value),
               ),
-
+              
               const SizedBox(height: 32),
-
+              
               ElevatedButton(
                 onPressed: isLoading ? null : makePrediction,
                 style: ElevatedButton.styleFrom(
@@ -289,22 +279,17 @@ class _PredictionScreenState extends State<PredictionScreen> {
                         width: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white,
-                          ),
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       )
                     : const Text(
                         'Predict',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
               ),
-
+              
               const SizedBox(height: 24),
-
+              
               if (predictionResult.isNotEmpty)
                 Card(
                   elevation: 4,
@@ -318,9 +303,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                     child: Column(
                       children: [
                         Icon(
-                          resultColor == Colors.red
-                              ? Icons.error
-                              : Icons.check_circle,
+                          resultColor == Colors.red ? Icons.error : Icons.check_circle,
                           size: 48,
                           color: resultColor,
                         ),
@@ -372,7 +355,9 @@ class _PredictionScreenState extends State<PredictionScreen> {
         labelText: label,
         hintText: hint,
         prefixIcon: Icon(icon, color: Colors.green.shade700),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: Colors.green.shade200),
@@ -395,11 +380,13 @@ class _PredictionScreenState extends State<PredictionScreen> {
     required Function(String?) onChanged,
   }) {
     return DropdownButtonFormField<String>(
-      initialValue: value,
+      value: value,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon, color: Colors.green.shade700),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: Colors.green.shade200),
@@ -412,7 +399,10 @@ class _PredictionScreenState extends State<PredictionScreen> {
         fillColor: Colors.white,
       ),
       items: items.map((String item) {
-        return DropdownMenuItem<String>(value: item, child: Text(item));
+        return DropdownMenuItem<String>(
+          value: item,
+          child: Text(item),
+        );
       }).toList(),
       onChanged: onChanged,
     );
@@ -428,7 +418,10 @@ class _PredictionScreenState extends State<PredictionScreen> {
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: SwitchListTile(
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+        title: Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.w500),
+        ),
         secondary: Icon(icon, color: Colors.green.shade700),
         value: value,
         onChanged: onChanged,
