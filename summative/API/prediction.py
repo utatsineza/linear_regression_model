@@ -12,27 +12,26 @@ class CropYieldInput(BaseModel):
     Irrigation_Used: int = Field(..., ge=0, le=1, description="Irrigation (0=No, 1=Yes)")
     Days_to_Harvest: int = Field(..., ge=30, le=365, description="Days to harvest")
     
-    # Region (one-hot encoded)
-    Region_East: int = Field(0, ge=0, le=1)
+    # Region (3 regions)
     Region_North: int = Field(0, ge=0, le=1)
     Region_South: int = Field(0, ge=0, le=1)
     Region_West: int = Field(0, ge=0, le=1)
     
-    # Soil Type (one-hot encoded)
+    # Soil Type (5 types)
     Soil_Type_Clay: int = Field(0, ge=0, le=1)
     Soil_Type_Loam: int = Field(0, ge=0, le=1)
+    Soil_Type_Peaty: int = Field(0, ge=0, le=1)
     Soil_Type_Sandy: int = Field(0, ge=0, le=1)
     Soil_Type_Silt: int = Field(0, ge=0, le=1)
     
-    # Crop Type (one-hot encoded)
-    Crop_Barley: int = Field(0, ge=0, le=1)
+    # Crop Type (5 crops)
     Crop_Cotton: int = Field(0, ge=0, le=1)
+    Crop_Maize: int = Field(0, ge=0, le=1)
     Crop_Rice: int = Field(0, ge=0, le=1)
     Crop_Soybean: int = Field(0, ge=0, le=1)
     Crop_Wheat: int = Field(0, ge=0, le=1)
     
-    # Weather Condition (one-hot encoded)
-    Weather_Condition_Cloudy: int = Field(0, ge=0, le=1)
+    # Weather Condition (2 conditions)
     Weather_Condition_Rainy: int = Field(0, ge=0, le=1)
     Weather_Condition_Sunny: int = Field(0, ge=0, le=1)
 
@@ -91,27 +90,26 @@ async def predict_yield(input_data: CropYieldInput):
         raise HTTPException(status_code=500, detail="Model not loaded properly")
     
     try:
-        # Convert input to DataFrame with ALL 21 features in exact order
+        # Convert input to DataFrame with ALL 20 features in exact order
         input_dict = {
             'Rainfall_mm': input_data.Rainfall_mm,
             'Temperature_Celsius': input_data.Temperature_Celsius,
             'Fertilizer_Used': input_data.Fertilizer_Used,
             'Irrigation_Used': input_data.Irrigation_Used,
             'Days_to_Harvest': input_data.Days_to_Harvest,
-            'Region_East': input_data.Region_East,
             'Region_North': input_data.Region_North,
             'Region_South': input_data.Region_South,
             'Region_West': input_data.Region_West,
             'Soil_Type_Clay': input_data.Soil_Type_Clay,
             'Soil_Type_Loam': input_data.Soil_Type_Loam,
+            'Soil_Type_Peaty': input_data.Soil_Type_Peaty,
             'Soil_Type_Sandy': input_data.Soil_Type_Sandy,
             'Soil_Type_Silt': input_data.Soil_Type_Silt,
-            'Crop_Barley': input_data.Crop_Barley,
             'Crop_Cotton': input_data.Crop_Cotton,
+            'Crop_Maize': input_data.Crop_Maize,
             'Crop_Rice': input_data.Crop_Rice,
             'Crop_Soybean': input_data.Crop_Soybean,
             'Crop_Wheat': input_data.Crop_Wheat,
-            'Weather_Condition_Cloudy': input_data.Weather_Condition_Cloudy,
             'Weather_Condition_Rainy': input_data.Weather_Condition_Rainy,
             'Weather_Condition_Sunny': input_data.Weather_Condition_Sunny
         }
