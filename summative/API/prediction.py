@@ -16,17 +16,17 @@ class CropYieldInput(BaseModel):
     Region_North: int = Field(0, ge=0, le=1)
     Region_South: int = Field(0, ge=0, le=1)
     Region_West: int = Field(0, ge=0, le=1)
+    Region_East: int = Field(0, ge=0, le=1)
     
     # Soil Type (5 types)
     Soil_Type_Clay: int = Field(0, ge=0, le=1)
     Soil_Type_Loam: int = Field(0, ge=0, le=1)
-    Soil_Type_Peaty: int = Field(0, ge=0, le=1)
     Soil_Type_Sandy: int = Field(0, ge=0, le=1)
     Soil_Type_Silt: int = Field(0, ge=0, le=1)
     
     # Crop Type (5 crops)
     Crop_Cotton: int = Field(0, ge=0, le=1)
-    Crop_Maize: int = Field(0, ge=0, le=1)
+    Crop_Barley: int = Field(0, ge=0, le=1)
     Crop_Rice: int = Field(0, ge=0, le=1)
     Crop_Soybean: int = Field(0, ge=0, le=1)
     Crop_Wheat: int = Field(0, ge=0, le=1)
@@ -34,7 +34,8 @@ class CropYieldInput(BaseModel):
     # Weather Condition (2 conditions)
     Weather_Condition_Rainy: int = Field(0, ge=0, le=1)
     Weather_Condition_Sunny: int = Field(0, ge=0, le=1)
-
+    Weather_Condition_Cloudy: int = Field(0, ge=0, le=1)
+    
 # Initialize FastAPI app
 app = FastAPI(
     title="Crop Yield Prediction API",
@@ -100,18 +101,19 @@ async def predict_yield(input_data: CropYieldInput):
             'Region_North': input_data.Region_North,
             'Region_South': input_data.Region_South,
             'Region_West': input_data.Region_West,
+            'Region_East': input_data.Region_East,
             'Soil_Type_Clay': input_data.Soil_Type_Clay,
             'Soil_Type_Loam': input_data.Soil_Type_Loam,
-            'Soil_Type_Peaty': input_data.Soil_Type_Peaty,
             'Soil_Type_Sandy': input_data.Soil_Type_Sandy,
             'Soil_Type_Silt': input_data.Soil_Type_Silt,
             'Crop_Cotton': input_data.Crop_Cotton,
-            'Crop_Maize': input_data.Crop_Maize,
+            'Crop_Barley': input_data.Crop_Barley,
             'Crop_Rice': input_data.Crop_Rice,
             'Crop_Soybean': input_data.Crop_Soybean,
             'Crop_Wheat': input_data.Crop_Wheat,
             'Weather_Condition_Rainy': input_data.Weather_Condition_Rainy,
-            'Weather_Condition_Sunny': input_data.Weather_Condition_Sunny
+            'Weather_Condition_Sunny': input_data.Weather_Condition_Sunny,
+            'Weather_Condition_Cloudy': input_data.Weather_Condition_Cloudy
         }
         
         # Create DataFrame
